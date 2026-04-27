@@ -20,7 +20,7 @@ class WatiService
         $this->baseUrl = rtrim(config('services.wati.base_url'), '/');
     }
 
-    public function sendSessionMessage(string $phone, string $message): array
+    public function sendSessionMessage(string $phone, string $message, bool $withLog = true): array
     {
         $phone = $this->sanitizePhone($phone);
 
@@ -28,12 +28,14 @@ class WatiService
             'messageText' => $message,
         ]);
 
-        $this->logMessage($phone, 'outgoing', 'text', $message, $response);
+        if ($withLog) {
+            $this->logMessage($phone, 'outgoing', 'text', $message, $response);
+        }
 
         return $response;
     }
 
-    public function sendTemplateMessage(string $phone, string $templateName, array $parameters = []): array
+    public function sendTemplateMessage(string $phone, string $templateName, array $parameters = [], bool $withLog = true): array
     {
         $phone = $this->sanitizePhone($phone);
 
@@ -48,17 +50,19 @@ class WatiService
             }, $parameters);
         }
 
-        $response = $this->makeRequest('POST', "/api/v1/sendTemplateMessage?whatsappNumber={$phone}", $body);
+        $response = $this->makeRequest('POST', '/api/v1/sendTemplateMessage?whatsappNumber='.urlencode($phone), $body);
 
-        $this->logMessage($phone, 'outgoing', 'template', $templateName, $response, [
-            'template_name' => $templateName,
-            'parameters' => $parameters,
-        ]);
+        if ($withLog) {
+            $this->logMessage($phone, 'outgoing', 'template', $templateName, $response, [
+                'template_name' => $templateName,
+                'parameters' => $parameters,
+            ]);
+        }
 
         return $response;
     }
 
-    public function sendMediaMessage(string $phone, string $fileUrl): array
+    public function sendMediaMessage(string $phone, string $fileUrl, bool $withLog = true): array
     {
         $phone = $this->sanitizePhone($phone);
 
@@ -66,12 +70,14 @@ class WatiService
             'url' => $fileUrl,
         ]);
 
-        $this->logMessage($phone, 'outgoing', 'media', $fileUrl, $response);
+        if ($withLog) {
+            $this->logMessage($phone, 'outgoing', 'media', $fileUrl, $response);
+        }
 
         return $response;
     }
 
-    public function sendInteractiveButtons(string $phone, string $message, array $buttons): array
+    public function sendInteractiveButtons(string $phone, string $message, array $buttons, bool $withLog = true): array
     {
         $phone = $this->sanitizePhone($phone);
 
@@ -84,11 +90,13 @@ class WatiService
             }, $buttons),
         ];
 
-        $response = $this->makeRequest('POST', "/api/v1/sendInteractiveButtonsMessage?whatsappNumber={$phone}", $body);
+        $response = $this->makeRequest('POST', '/api/v1/sendInteractiveButtonsMessage?whatsappNumber='.urlencode($phone), $body);
 
-        $this->logMessage($phone, 'outgoing', 'interactive', $message, $response, [
-            'buttons' => $buttons,
-        ]);
+        if ($withLog) {
+            $this->logMessage($phone, 'outgoing', 'interactive', $message, $response, [
+                'buttons' => $buttons,
+            ]);
+        }
 
         return $response;
     }
@@ -101,6 +109,28 @@ class WatiService
     public function getMessageStatus(string $messageId): array
     {
         return $this->makeRequest('GET', "/api/v1/getMessageStatus/{$messageId}");
+    }
+
+    public function logMessage(
+        string $phone,
+        string $direction,
+        string $messageType,
+        string $message,
+        array $response,
+        array $extraPayload = []
+    ): WhatsappMessage {
+        $status = ($response['success'] ?? false) ? 'sent' : 'failed';
+        $externalId = $response['data']['id'] ?? $response['data']['messageId'] ?? null;
+
+        return WhatsappMessage::create([
+            'phone' => $phone,
+            'direction' => $direction,
+            'message_type' => $messageType,
+            'message' => $message,
+            'status' => $status,
+            'external_message_id' => $externalId,
+            'payload' => array_merge($extraPayload, ['response' => $response]),
+        ]);
     }
 
     private function makeRequest(string $method, string $endpoint, array $data = []): array
@@ -167,28 +197,6 @@ class WatiService
                 'message' => $e->getMessage(),
             ];
         }
-    }
-
-    private function logMessage(
-        string $phone,
-        string $direction,
-        string $messageType,
-        string $message,
-        array $response,
-        array $extraPayload = []
-    ): WhatsappMessage {
-        $status = ($response['success'] ?? false) ? 'sent' : 'failed';
-        $externalId = $response['data']['id'] ?? $response['data']['messageId'] ?? null;
-
-        return WhatsappMessage::create([
-            'phone' => $phone,
-            'direction' => $direction,
-            'message_type' => $messageType,
-            'message' => $message,
-            'status' => $status,
-            'external_message_id' => $externalId,
-            'payload' => array_merge($extraPayload, ['response' => $response]),
-        ]);
     }
 
     private function sanitizePhone(string $phone): string
