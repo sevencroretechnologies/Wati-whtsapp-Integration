@@ -1,0 +1,253 @@
+{
+    "info": {
+        "name": "WATI WhatsApp Integration API",
+        "description": "Complete API collection for WATI WhatsApp Integration with Laravel 11",
+        "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+    },
+    "auth": {
+        "type": "bearer",
+        "bearer": [
+            {
+                "key": "token",
+                "value": "{{sanctum_token}}",
+                "type": "string"
+            }
+        ]
+    },
+    "variable": [
+        {
+            "key": "base_url",
+            "value": "http://localhost:8000/api"
+        },
+        {
+            "key": "sanctum_token",
+            "value": "your-sanctum-token-here"
+        }
+    ],
+    "item": [
+        {
+            "name": "WhatsApp Messaging",
+            "item": [
+                {
+                    "name": "Send Session Message",
+                    "request": {
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Accept",
+                                "value": "application/json"
+                            },
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n    \"phone\": \"+919876543210\",\n    \"message\": \"Hello from API!\"\n}"
+                        },
+                        "url": {
+                            "raw": "{{base_url}}/whatsapp/send-message",
+                            "host": ["{{base_url}}"],
+                            "path": ["whatsapp", "send-message"]
+                        }
+                    }
+                },
+                {
+                    "name": "Send Template Message",
+                    "request": {
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Accept",
+                                "value": "application/json"
+                            },
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n    \"phone\": \"+919876543210\",\n    \"template_name\": \"welcome_message\",\n    \"parameters\": [\n        {\"name\": \"name\", \"value\": \"John Doe\"}\n    ]\n}"
+                        },
+                        "url": {
+                            "raw": "{{base_url}}/whatsapp/send-template",
+                            "host": ["{{base_url}}"],
+                            "path": ["whatsapp", "send-template"]
+                        }
+                    }
+                },
+                {
+                    "name": "Send Media Message",
+                    "request": {
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Accept",
+                                "value": "application/json"
+                            },
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n    \"phone\": \"+919876543210\",\n    \"file_url\": \"https://example.com/document.pdf\"\n}"
+                        },
+                        "url": {
+                            "raw": "{{base_url}}/whatsapp/send-media",
+                            "host": ["{{base_url}}"],
+                            "path": ["whatsapp", "send-media"]
+                        }
+                    }
+                },
+                {
+                    "name": "Send Interactive Buttons",
+                    "request": {
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Accept",
+                                "value": "application/json"
+                            },
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n    \"phone\": \"+919876543210\",\n    \"message\": \"Please choose an option:\",\n    \"buttons\": [\n        {\"text\": \"Services\"},\n        {\"text\": \"Pricing\"},\n        {\"text\": \"Support\"}\n    ]\n}"
+                        },
+                        "url": {
+                            "raw": "{{base_url}}/whatsapp/send-buttons",
+                            "host": ["{{base_url}}"],
+                            "path": ["whatsapp", "send-buttons"]
+                        }
+                    }
+                }
+            ]
+        },
+        {
+            "name": "Message Status",
+            "item": [
+                {
+                    "name": "Get Message Status",
+                    "request": {
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "Accept",
+                                "value": "application/json"
+                            }
+                        ],
+                        "url": {
+                            "raw": "{{base_url}}/whatsapp/message-status/msg_123",
+                            "host": ["{{base_url}}"],
+                            "path": ["whatsapp", "message-status", "msg_123"]
+                        }
+                    }
+                }
+            ]
+        },
+        {
+            "name": "Admin",
+            "item": [
+                {
+                    "name": "List Messages",
+                    "request": {
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "Accept",
+                                "value": "application/json"
+                            }
+                        ],
+                        "url": {
+                            "raw": "{{base_url}}/whatsapp/messages?per_page=15&status=&direction=&phone=&date_from=&date_to=",
+                            "host": ["{{base_url}}"],
+                            "path": ["whatsapp", "messages"],
+                            "query": [
+                                {"key": "per_page", "value": "15"},
+                                {"key": "status", "value": ""},
+                                {"key": "direction", "value": ""},
+                                {"key": "phone", "value": ""},
+                                {"key": "date_from", "value": ""},
+                                {"key": "date_to", "value": ""}
+                            ]
+                        }
+                    }
+                },
+                {
+                    "name": "Get Conversation",
+                    "request": {
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "Accept",
+                                "value": "application/json"
+                            }
+                        ],
+                        "url": {
+                            "raw": "{{base_url}}/whatsapp/conversation/+919876543210",
+                            "host": ["{{base_url}}"],
+                            "path": ["whatsapp", "conversation", "+919876543210"]
+                        }
+                    }
+                },
+                {
+                    "name": "Resend Failed Message",
+                    "request": {
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Accept",
+                                "value": "application/json"
+                            }
+                        ],
+                        "url": {
+                            "raw": "{{base_url}}/whatsapp/resend/1",
+                            "host": ["{{base_url}}"],
+                            "path": ["whatsapp", "resend", "1"]
+                        }
+                    }
+                }
+            ]
+        },
+        {
+            "name": "Webhook",
+            "item": [
+                {
+                    "name": "Webhook (Incoming Message)",
+                    "request": {
+                        "auth": {
+                            "type": "noauth"
+                        },
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Accept",
+                                "value": "application/json"
+                            },
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n    \"waId\": \"+919876543210\",\n    \"text\": \"hi\",\n    \"id\": \"msg_test_123\"\n}"
+                        },
+                        "url": {
+                            "raw": "{{base_url}}/whatsapp/webhook",
+                            "host": ["{{base_url}}"],
+                            "path": ["whatsapp", "webhook"]
+                        }
+                    }
+                }
+            ]
+        }
+    ]
+}
