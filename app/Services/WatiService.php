@@ -24,9 +24,7 @@ class WatiService
     {
         $phone = $this->sanitizePhone($phone);
 
-        $response = $this->makeRequest('POST', "/api/v1/sendSessionMessage/{$phone}", [
-            'messageText' => $message,
-        ]);
+        $response = $this->makeRequest('POST', "/api/v1/sendSessionMessage/{$phone}?messageText=".urlencode($message));
 
         if ($withLog) {
             $this->logMessage($phone, 'outgoing', 'text', $message, $response);
@@ -66,9 +64,7 @@ class WatiService
     {
         $phone = $this->sanitizePhone($phone);
 
-        $response = $this->makeRequest('POST', "/api/v1/sendSessionFile/{$phone}", [
-            'url' => $fileUrl,
-        ]);
+        $response = $this->makeRequest('POST', "/api/v1/sendSessionFile/{$phone}?url=".urlencode($fileUrl));
 
         if ($withLog) {
             $this->logMessage($phone, 'outgoing', 'media', $fileUrl, $response);
