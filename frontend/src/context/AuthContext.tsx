@@ -53,9 +53,11 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         throw new Error(response.data.message);
       }
     } catch (error: unknown) {
-      const err = error as { response?: { data?: { message?: string } } };
-      const message = err.response?.data?.message || 'Login failed';
-      toast.error(message);
+      if (!(error instanceof Error && error.message)) {
+        const err = error as { response?: { data?: { message?: string } } };
+        const message = err.response?.data?.message || 'Login failed';
+        toast.error(message);
+      }
       throw error;
     } finally {
       setIsLoading(false);
