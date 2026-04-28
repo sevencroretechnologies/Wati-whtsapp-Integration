@@ -1,4 +1,5 @@
-import { createContext, useContext, useState, useCallback, useEffect, type ReactNode } from 'react';
+import { createContext, useContext, useState, useCallback, useEffect } from 'react';
+import type { ReactNode } from 'react';
 import { authApi } from '../api/auth';
 import type { User, LoginCredentials } from '../types';
 import toast from 'react-hot-toast';

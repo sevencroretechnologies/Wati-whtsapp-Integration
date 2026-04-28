@@ -10,7 +10,6 @@ interface ConversationSummary {
   lastMessageTime: string;
   messageCount: number;
   direction: 'incoming' | 'outgoing';
-  status: string;
 }
 
 export default function Conversations() {
@@ -34,7 +33,6 @@ export default function Conversations() {
               lastMessageTime: msg.created_at,
               messageCount: 1,
               direction: msg.direction,
-              status: msg.status,
             });
           } else {
             existing.messageCount++;

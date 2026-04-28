@@ -1,4 +1,5 @@
-import { useState, type FormEvent } from 'react';
+import { useState } from 'react';
+import type { FormEvent } from 'react';
 import { useAuth } from '../context/AuthContext';
 import { useNavigate } from 'react-router-dom';
 
@@ -14,7 +15,7 @@ export default function Login() {
       await login({ email, password });
       navigate('/');
     } catch {
-      // error already handled in AuthContext
+      // error handled in AuthContext
     }
   };
 

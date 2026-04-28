@@ -57,12 +57,12 @@ export default function Dashboard() {
   }, []);
 
   const statCards = [
-    { label: 'Total Messages', value: stats.totalMessages, color: 'bg-blue-500', icon: '💬' },
-    { label: 'Incoming', value: stats.incoming, color: 'bg-purple-500', icon: '📥' },
-    { label: 'Outgoing', value: stats.outgoing, color: 'bg-whatsapp-500', icon: '📤' },
-    { label: 'Delivered', value: stats.delivered, color: 'bg-green-500', icon: '📨' },
-    { label: 'Failed', value: stats.failed, color: 'bg-red-500', icon: '❌' },
-    { label: 'Pending', value: stats.pending, color: 'bg-yellow-500', icon: '⏳' },
+    { label: 'Total Messages', value: stats.totalMessages, color: 'bg-blue-500' },
+    { label: 'Incoming', value: stats.incoming, color: 'bg-purple-500' },
+    { label: 'Outgoing', value: stats.outgoing, color: 'bg-whatsapp-500' },
+    { label: 'Delivered', value: stats.delivered, color: 'bg-green-500' },
+    { label: 'Failed', value: stats.failed, color: 'bg-red-500' },
+    { label: 'Pending', value: stats.pending, color: 'bg-yellow-500' },
   ];
 
   if (loading) {
@@ -83,8 +83,8 @@ export default function Dashboard() {
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mb-8">
         {statCards.map((card) => (
           <div key={card.label} className="card flex items-center gap-4">
-            <div className={`w-12 h-12 ${card.color} rounded-xl flex items-center justify-center text-white text-xl shadow-lg`}>
-              {card.icon}
+            <div className={`w-12 h-12 ${card.color} rounded-xl flex items-center justify-center text-white text-lg font-bold shadow-lg`}>
+              {card.value}
             </div>
             <div>
               <p className="text-2xl font-bold text-gray-900">{card.value}</p>

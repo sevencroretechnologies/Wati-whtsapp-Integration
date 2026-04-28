@@ -1,11 +1,10 @@
 # WATI WhatsApp Integration — Frontend
 
-React SPA frontend for the WATI WhatsApp Integration backend.
+React SPA frontend for the WATI WhatsApp Integration backend, built with Create React App.
 
 ## Tech Stack
 
-- **React 18** with TypeScript
-- **Vite** for development and build
+- **React 18** with TypeScript (Create React App)
 - **Tailwind CSS** for styling
 - **React Router** for client-side routing
 - **Axios** for API calls
@@ -29,16 +28,16 @@ cp .env.example .env
 Edit `.env` and set the backend API URL:
 
 ```env
-VITE_API_URL=http://localhost:8000
+REACT_APP_API_URL=http://localhost:8000
 ```
 
 ### 3. Start Development Server
 
 ```bash
-npm run dev
+npm start
 ```
 
-The frontend runs at `http://localhost:5173` and proxies API requests to the Laravel backend at `http://localhost:8000`.
+The frontend runs at `http://localhost:3000` and proxies API requests to the Laravel backend at `http://localhost:8000`.
 
 ### 4. Build for Production
 
@@ -46,7 +45,7 @@ The frontend runs at `http://localhost:5173` and proxies API requests to the Lar
 npm run build
 ```
 
-Output goes to `frontend/dist/`.
+Output goes to `frontend/build/`.
 
 ## Pages
 
