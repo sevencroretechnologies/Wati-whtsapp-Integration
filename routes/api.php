@@ -1,8 +1,13 @@
 <?php
 
+use App\Http\Controllers\API\AuthController;
 use App\Http\Controllers\API\WhatsAppController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+
+// Auth endpoints
+Route::post('/auth/login', [AuthController::class, 'login'])->name('auth.login');
+Route::post('/auth/logout', [AuthController::class, 'logout'])->middleware('auth:sanctum')->name('auth.logout');
 
 Route::get('/user', function (Request $request) {
     return $request->user();
