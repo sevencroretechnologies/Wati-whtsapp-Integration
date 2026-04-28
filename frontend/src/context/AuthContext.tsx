@@ -43,6 +43,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
   const login = useCallback(async (credentials: LoginCredentials) => {
     setIsLoading(true);
+    let toastShown = false;
     try {
       const response = await authApi.login(credentials);
       if (response.data.status) {
@@ -51,12 +52,13 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         toast.success('Login successful');
       } else {
         toast.error(response.data.message || 'Login failed');
+        toastShown = true;
         throw new Error(response.data.message);
       }
     } catch (error: unknown) {
-      if (!(error instanceof Error && error.message)) {
+      if (!toastShown) {
         const err = error as { response?: { data?: { message?: string } } };
-        const message = err.response?.data?.message || 'Login failed';
+        const message = err.response?.data?.message || (error instanceof Error ? error.message : 'Login failed');
         toast.error(message);
       }
       throw error;
